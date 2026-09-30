@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amanix - Your Dashboard</title>
+  <style>
+    /* ============================================
+       AMANIX - USER DASHBOARD STYLES
+       ============================================ */
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #000000;
+      color: #e7e9ea;
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      width: 240px;
+      background: #0a0a0a;
+      border-right: 1px solid #2f2f2f;
+      padding: 24px 12px;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      margin-bottom: 32px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .sidebar-logo img {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      margin-right: 8px;
+      object-fit: contain;
+    }
+
+    .sidebar-logo span { color: #7c3aed; }
+
+    .nav-section {
+      margin-bottom: 20px;
+    }
+
+    .nav-label {
+      font-size: 11px;
+      color: #71767b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 0 12px;
+      margin-bottom: 8px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      color: #e7e9ea;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.15s;
+      text-decoration: none;
+    }
+
+    .nav-item:hover { background: #1a1a1a; }
+    .nav-item.active { background: #1a1a1a; color: #7c3aed; font-weight: bold; }
+
+    /* ===== MAIN CONTENT ===== */
+    .main {
+      flex: 1;
+      margin-left: 240px;
+      padding: 32px 40px;
+      max-width: calc(100% - 240px);
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .welcome {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .welcome-sub {
+      font-size: 14px;
+      color: #71767b;
+      margin-top: 4px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .streak-pill {
+      background: linear-gradient(135deg, #f59e0b, #fbbf24);
+      color: #000;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .logout-btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid #ef4444;
+      background: transparent;
+      color: #ef4444;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .logout-btn:hover {
+      background: #ef4444;
+      color: white;
+    }
+
+    /* ===== STAT CARDS ===== */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: #1a1a1a;
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid #2f2f2f;
+    }
+
+    .stat-icon {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #71767b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 36px;
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    .stat-sub {
+      font-size: 12px;
+      color: #10b981;
+      margin-top: 4px;
+    }
+
+    /* ===== SECTIONS ===== */
+    .section {
+      margin-bottom: 32px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ===== BADGE COLLECTION ===== */
+    .badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    .badge-card {
+      background: #1a1a1a;
+      border-radius: 16px;
+      padding: 16px;
+      border: 2px solid #2f2f2f;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .badge-card.earned {
+      border-color: #10b981;
+      background: linear-gradient(135deg, #1a1a1a, rgba(16, 185, 129, 0.1));
+    }
+
+    .badge-card.locked {
+      opacity: 0.5;
+    }
+
+    .badge-emoji {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .badge-name {
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .badge-points {
+      font-size: 11px;
+      color: #71767b;
+      margin-bottom: 6px;
+    }
+
+    .badge-status {
+      font-size: 11px;
+      font-weight: bold;
+      padding: 3px 10px;
+      border-radius: 10px;
+      display: inline-block;
+    }
+
+    .badge-status.earned {
+      background: #10b981;
+      color: #000;
+    }
+
+    .badge-status.locked {
+      background: #2a2a2a;
+      color: #71767b;
+    }
+
+    /* ===== PROGRESS BAR ===== */
+    .progress-block {
+      background: #1a1a1a;
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid #2f2f2f;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #2a2a2a;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #7c3aed;
+      border-radius: 4px;
+      transition: width 0.5s;
+    }
+
+    /* ===== ACTIVITY LOG ===== */
+    .activity-list {
+      background: #1a1a1a;
+      border-radius: 16px;
+      border: 1px solid #2f2f2f;
+      overflow: hidden;
+    }
+
+    .activity-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      border-bottom: 1px solid #2f2f2f;
+      font-size: 14px;
+    }
+
+    .activity-item:last-child { border-bottom: none; }
+
+    .activity-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .activity-icon {
+      font-size: 18px;
+      width: 24px;
+      text-align: center;
+    }
+
+    .activity-text {
+      color: #e7e9ea;
+    }
+
+    .activity-meta {
+      font-size: 11px;
+      color: #71767b;
+      margin-top: 2px;
+    }
+
+    .activity-points {
+      font-weight: bold;
+      font-size: 13px;
+      color: #10b981;
+    }
+
+    .activity-points.zero { color: #71767b; }
+
+    /* ===== PERFORMANCE METRICS ===== */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .metric-card {
+      background: #1a1a1a;
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid #2f2f2f;
+    }
+
+    .metric-title {
+      font-size: 12px;
+      color: #71767b;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .metric-value {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .metric-value.green { color: #10b981; }
+    .metric-value.blue { color: #3b82f6; }
+    .metric-value.orange { color: #f59e0b; }
+
+    /* ===== PROFILE FOOTER ===== */
+    .profile-footer {
+      background: #1a1a1a;
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid #2f2f2f;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 32px;
+    }
+
+    .profile-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .profile-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #7c3aed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .profile-name {
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .profile-level {
+      font-size: 12px;
+      color: #71767b;
+    }
+
+    .profile-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #10b981;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      text-align: center;
+      color: #4f4f4f;
+      font-size: 12px;
+      padding: 32px 0;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .sidebar { width: 60px; padding: 16px 8px; }
+      .sidebar-logo span { display: none; }
+      .nav-item span { display: none; }
+      .nav-label { display: none; }
+      .main { margin-left: 60px; padding: 20px; }
+      .stats-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <img src="amanix_logo.png" alt="Amanix" onerror="this.style.display='none'" />
+    Aman<span>ix</span>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Main</div>
+    <a class="nav-item active" href="dashboard.html">
+      📊 <span>Dashboard</span>
+    </a>
+    <a class="nav-item" href="evaluation.html">
+      📝 <span>Evaluation</span>
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Settings</div>
+    <a class="nav-item" href="#" onclick="openSettings()">
+      ⚙️ <span>Settings</span>
+    </a>
+    <a class="nav-item" href="#" onclick="openHelp()">
+      ❓ <span>Help &amp; FAQ</span>
+    </a>
+  </div>
+</div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="main">
+
+  <!-- ===== HEADER ===== -->
+  <div class="header">
+    <div>
+      <div class="welcome" id="welcomeText">Welcome back! 👋</div>
+      <div class="welcome-sub" id="welcomeSub">Loading your privacy progress...</div>
+    </div>
+    <div class="header-right">
+      <div class="streak-pill" id="streakPill">🔥 0 day streak</div>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- ===== STAT CARDS ===== -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon">🏆</div>
+      <div class="stat-label">Total Points</div>
+      <div class="stat-value" id="totalPoints">0</div>
+      <div class="stat-sub" id="pointsSub">+0 pts this week</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">🔥</div>
+      <div class="stat-label">Day Streak</div>
+      <div class="stat-value" id="streakValue">0</div>
+      <div class="stat-sub" id="streakSub">Start today!</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">🛡️</div>
+      <div class="stat-label">Posts Protected</div>
+      <div class="stat-value" id="postsProtected">0</div>
+      <div class="stat-sub" id="protectedSub">Since joining</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">🏅</div>
+      <div class="stat-label">Badges Earned</div>
+      <div class="stat-value" id="badgesCount">0 / 4</div>
+      <div class="stat-sub" id="badgesSub">2 more to unlock</div>
+    </div>
+  </div>
+
+  <!-- ===== BADGE COLLECTION ===== -->
+  <div class="section">
+    <div class="section-title">🏅 Badge Collection</div>
+    <div class="badge-grid" id="badgeGrid">
+      <!-- Badges are generated by JavaScript -->
+    </div>
+
+    <!-- Progress to next badge -->
+    <div class="progress-block" style="margin-top: 16px;">
+      <div class="progress-header">
+        <span id="nextBadgeLabel">Next: Privacy Novice</span>
+        <span id="nextBadgePoints">0 / 50</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="nextBadgeBar" style="width: 0%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== RECENT ACTIVITY ===== -->
+  <div class="section">
+    <div class="section-title">📋 Recent Activity</div>
+    <div class="activity-list" id="activityList">
+      <div class="activity-item">
+        <div class="activity-left">
+          <span class="activity-icon">⏳</span>
+          <div>
+            <div class="activity-text">No activity yet</div>
+            <div class="activity-meta">Start masking posts to see your progress</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PERFORMANCE METRICS ===== -->
+  <div class="section">
+    <div class="section-title">📈 Performance</div>
+    <div class="metrics-row">
+      <div class="metric-card">
+        <div class="metric-title">Edit Rate</div>
+        <div class="metric-value blue" id="editRate">0%</div>
+        <div style="font-size: 11px; color: #71767b;">% posts edited after warning</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-title">Masking Rate</div>
+        <div class="metric-value green" id="maskingRate">0%</div>
+        <div style="font-size: 11px; color: #71767b;">% risks you chose to mask</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-title">Response Time</div>
+        <div class="metric-value orange" id="responseTime">— ms</div>
+        <div style="font-size: 11px; color: #71767b;">Detection latency (target &lt;200ms)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PROFILE FOOTER ===== -->
+  <div class="profile-footer">
+    <div class="profile-info">
+      <div class="profile-avatar" id="profileAvatar">?</div>
+      <div>
+        <div class="profile-name" id="profileName">Loading...</div>
+        <div class="profile-level" id="profileLevel">Level 1</div>
+      </div>
+    </div>
+    <div class="profile-status">
+      <span class="status-dot"></span>
+      Active
+    </div>
+  </div>
+
+  <div class="footer">
+    Amanix Dashboard &bull; Project 17038D &bull; IIUM
+  </div>
+
+</div>
+
+<script src="dashboard.js"></script>
+
+
+</body>
+</html>

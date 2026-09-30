@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amanix - Admin Dashboard</title>
+  <style>
+    /* ============================================
+       AMANIX - ADMIN DASHBOARD STYLES
+       ============================================ */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #000000;
+      color: #e7e9ea;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    /* ===== CONTAINER ===== */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #2f2f2f;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      object-fit: contain;
+    }
+
+    .header-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .header-title span {
+      color: #7c3aed;
+    }
+
+    .header-subtitle {
+      font-size: 12px;
+      color: #71767b;
+      margin-top: 2px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .header-btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid #2f2f2f;
+      background: #1a1a1a;
+      color: #e7e9ea;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+
+    .header-btn:hover {
+      background: #2a2a2a;
+    }
+
+    .header-btn.primary {
+      background: #7c3aed;
+      border-color: #7c3aed;
+      color: white;
+    }
+
+    .header-btn.primary:hover {
+      background: #6d28d9;
+    }
+
+    /* ===== SYSTEM OVERVIEW ===== */
+    .section-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 12px;
+      margin-top: 24px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: #1a1a1a;
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid #2f2f2f;
+    }
+
+    .stat-icon {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #71767b;
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    .stat-sub {
+      font-size: 11px;
+      color: #10b981;
+      margin-top: 4px;
+    }
+
+    /* ===== EVALUATION METRICS ===== */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .metric-card {
+      background: #1a1a1a;
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid #2f2f2f;
+    }
+
+    .metric-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .metric-icon {
+      font-size: 18px;
+    }
+
+    .metric-title {
+      font-size: 13px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #e7e9ea;
+    }
+
+    .metric-value {
+      font-size: 32px;
+      font-weight: bold;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .metric-value.green { color: #10b981; }
+    .metric-value.blue { color: #3b82f6; }
+    .metric-value.orange { color: #f59e0b; }
+    .metric-value.red { color: #ef4444; }
+    .metric-value.purple { color: #7c3aed; }
+
+    .metric-bar {
+      width: 100%;
+      height: 6px;
+      background: #2a2a2a;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .metric-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.5s ease;
+    }
+
+    .metric-bar-fill.green { background: #10b981; }
+    .metric-bar-fill.blue { background: #3b82f6; }
+    .metric-bar-fill.orange { background: #f59e0b; }
+    .metric-bar-fill.red { background: #ef4444; }
+    .metric-bar-fill.purple { background: #7c3aed; }
+
+    .metric-description {
+      font-size: 12px;
+      color: #71767b;
+    }
+
+    /* ===== USER LIST ===== */
+    .user-table {
+      width: 100%;
+      background: #1a1a1a;
+      border-radius: 16px;
+      border: 1px solid #2f2f2f;
+      overflow: hidden;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .user-table th {
+      text-align: left;
+      padding: 12px 16px;
+      background: #0a0a0a;
+      color: #71767b;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid #2f2f2f;
+    }
+
+    .user-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #2f2f2f;
+      color: #e7e9ea;
+    }
+
+    .user-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .user-table tr:hover {
+      background: #202020;
+    }
+
+    .user-risk-badge {
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .user-risk-badge.high { background: #ef4444; color: white; }
+    .user-risk-badge.medium { background: #f59e0b; color: black; }
+    .user-risk-badge.low { background: #10b981; color: black; }
+
+    /* ===== EVALUATION LOG ===== */
+    .eval-log {
+      background: #1a1a1a;
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid #2f2f2f;
+    }
+
+    .eval-log-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #2f2f2f;
+      font-size: 13px;
+    }
+
+    .eval-log-item:last-child {
+      border-bottom: none;
+    }
+
+    .eval-log-time {
+      color: #71767b;
+      font-size: 12px;
+      min-width: 150px;
+    }
+
+    .eval-log-metric {
+      flex: 1;
+      padding-left: 16px;
+    }
+
+    .eval-log-value {
+      font-weight: bold;
+      min-width: 80px;
+      text-align: right;
+    }
+
+    /* ===== STATUS BAR ===== */
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1a1a1a;
+      border-radius: 16px;
+      padding: 16px 20px;
+      border: 1px solid #2f2f2f;
+      margin-top: 24px;
+    }
+
+    .status-admin {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .admin-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #7c3aed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .admin-name {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .admin-role {
+      font-size: 12px;
+      color: #71767b;
+    }
+
+    .admin-status {
+      font-size: 12px;
+      color: #10b981;
+    }
+
+    .status-updated {
+      font-size: 12px;
+      color: #71767b;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      text-align: center;
+      padding: 24px;
+      color: #4f4f4f;
+      font-size: 12px;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      body {
+        padding: 12px;
+      }
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- ===== HEADER ===== -->
+  <div class="header">
+    <div class="header-left">
+      <img src="amanix_logo.png" alt="Amanix" class="header-logo" />
+      <div>
+        <div class="header-title">Amanix <span>Admin</span></div>
+        <div class="header-subtitle">System monitoring &amp; evaluation</div>
+      </div>
+    </div>
+      <div class="header-actions">
+      <button class="header-btn" id="refreshBtn">🔄 Refresh</button>
+      <button class="header-btn primary" id="logoutBtn">Logout</button>
+    </div>
+  </div>
+
+  <!-- ===== SYSTEM OVERVIEW ===== -->
+  <div class="section-title">📊 System Overview</div>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">👥</div>
+      <div class="stat-label">Total Users</div>
+      <div class="stat-value" id="totalUsers">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">⚠️</div>
+      <div class="stat-label">Risky Posts Caught</div>
+      <div class="stat-value" id="totalRisky">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🛡️</div>
+      <div class="stat-label">Total Masks Applied</div>
+      <div class="stat-value" id="totalMasks">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🔥</div>
+      <div class="stat-label">Average Streak</div>
+      <div class="stat-value" id="avgStreak">—</div>
+      <div class="stat-sub">days per user</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">⏱️</div>
+      <div class="stat-label">Avg Response Time</div>
+      <div class="stat-value" id="avgResponse">—</div>
+      <div class="stat-sub">target &lt;200ms</div>
+    </div>
+  </div>
+
+  <!-- ===== EVALUATION METRICS ===== -->
+  <div class="section-title">🎯 Evaluation Metrics (9)</div>
+  <div class="metrics-grid">
+
+    <!-- 1. Detection Accuracy -->
+    <div class="metric-card">
+      <div class="metric-header">
+        <span class="metric-icon">🎯</span>
+        <span class="metric-title">Detection Accuracy</span>
+      </div>
+      <div class="metric-value green" id="detectionAccuracy">—</div>
+      <div class="metric-bar">
+        <div class="metric-bar-fill green" id="detectionAccuracyBar" style="width: 0%"></div>
+      </div>
+      <div class="metric-description">% of correctly identified risky posts</div>
+    </div>
+
+    <!-- 2. False Positive Rate -->
+    <div class="metric-card">
+      <div class="metric-header">
+        <span class="metric-icon">❌</span>
+        <span class="metric-title">False Positive Rate</span>
+      </div>
+      <div class="metric-value orange" id="falsePositive">—</div>
+      <div class="metric-bar">
+        <div class="metric-bar-fill orange" id="falsePositiveBar" style="width: 0%"></div>
+      </div>
+      <div class="metric-description">% of safe posts flagged as risky</div>
+    </div>
+
+    <!-- 3. False Negative Rate -->
+    <div class="metric-card">
+      <div class="metric-header">
+        <span class="metric-icon">❌</span>
+        <span class="metric-title">False Negative Rate</span>
+      </div>
+      <div class="metric-value orange" id="falseNegative">—</div>
+      <div class="metric-bar">
+        <div class="metric-bar-fill orange" id="falseNegativeBar" style="width: 0%"></div>
+      </div>
+      <div class="metric-description">% of risky posts missed</div>
+    </div>
+
+    <!-- 4. Masking Rate -->
+    <div class="metric-card">
+      <div class="metric-header">
+        <span class="metric-icon">🛡️</span>
+        <span class="metric-title">Masking Rate</span>
+      </div>
+      <div class="metric-value blue" id="maskingRate">—</div>
+      <div class="metric-bar">
+        <div class="metric-bar-fill blue" id="maskingRateBar" style="width: 0%"></div>
+      </div>
+      <div class="metric-description">% of detected risks users choose to mask</div>
+    </div>
+
+    <!-- 5. Intervention Success -->
+    <div class="metric-card">
+      <div class="metric-header">
+        <span class="metric-icon">🚫</span>
+        <span class="metric-title">Intervention Success</span>
+      </div>
+      <div class="metric-value green" id="interventionSuccess">—</div>
+      <div class="metric-bar">
+        <div class="metric-bar-fill green" id="interventionSuccessBar" style="width: 0%"></div>
+      </div>
+      <div class="metric-description">% of high-risk posts prevented</div>
+    </div>
+
+    <!-- 6. Response Time -->
+    <div class="metric-card">
+      <div class="metric-header">
+        <span class="metric-icon">⏱️</span>
+        <span class="metric-title">Response Time</span>
+      </div>
+      <div class="metric-value green" id="responseTime">—</div>
+      <div class="metric-bar">
+        <div class="metric-bar-fill green" id="responseTimeBar" style="width: 0%"></div>
+      </div>
+      <div class="metric-description">Average detection latency (target &lt;200ms)</div>
+    </div>
+
+    <!-- 7. Behavior Change -->
+    <div class="metric-card">
+      <div class="metric-header">
+        <span class="metric-icon">📝</span>
+        <span class="metric-title">Behavior Change</span>
+      </div>
+      <div class="metric-value blue" id="behaviorChange">—</div>
+      <div class="metric-bar">
+        <div class="metric-bar-fill blue" id="behaviorChangeBar" style="width: 0%"></div>
+      </div>
+      <div class="metric-description">% of posts edited after warning</div>
+    </div>
+
+    <!-- 8. Privacy Awareness -->
+    <div class="metric-card">
+      <div class="metric-header">
+        <span class="metric-icon">📚</span>
+        <span class="metric-title">Privacy Awareness</span>
+      </div>
+      <div class="metric-value purple" id="privacyAwareness">—</div>
+      <div class="metric-bar">
+        <div class="metric-bar-fill purple" id="privacyAwarenessBar" style="width: 0%"></div>
+      </div>
+      <div class="metric-description">Pre-test → Post-test improvement</div>
+    </div>
+
+    <!-- 9. User Satisfaction (SUS) -->
+    <div class="metric-card">
+      <div class="metric-header">
+        <span class="metric-icon">😊</span>
+        <span class="metric-title">User Satisfaction (SUS)</span>
+      </div>
+      <div class="metric-value green" id="susScore">—</div>
+      <div class="metric-bar">
+        <div class="metric-bar-fill green" id="susScoreBar" style="width: 0%"></div>
+      </div>
+      <div class="metric-description">System Usability Scale (above 68 = good)</div>
+    </div>
+
+  </div>
+
+  <!-- ===== USER LIST ===== -->
+  <div class="section-title">👥 User List (Anonymous)</div>
+  <table class="user-table">
+    <thead>
+      <tr>
+        <th>User ID</th>
+        <th>Risky Posts</th>
+        <th>Masks</th>
+        <th>Streak</th>
+        <th>Points</th>
+        <th>Top Risk Type</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="userTableBody">
+      <tr>
+        <td colspan="7" style="text-align: center; color: #71767b; padding: 24px;">
+          Loading users...
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ===== EVALUATION LOG ===== -->
+  <div class="section-title">📋 Recent Evaluation Log</div>
+  <div class="eval-log" id="evalLog">
+    <div class="eval-log-item">
+      <span class="eval-log-time">—</span>
+      <span class="eval-log-metric">Loading...</span>
+      <span class="eval-log-value">—</span>
+    </div>
+  </div>
+
+  <!-- ===== STATUS BAR ===== -->
+  <div class="status-bar">
+    <div class="status-admin">
+      <div class="admin-avatar">⚙️</div>
+      <div>
+        <div class="admin-name" id="adminName">Administrator</div>
+        <div class="admin-role">System Administrator</div>
+      </div>
+      <div class="admin-status">● Online</div>
+    </div>
+    <div class="status-updated">
+      Last updated: <span id="lastUpdated">—</span>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <div class="footer">
+    Amanix Admin Dashboard &bull; Project 17038D &bull; IIUM
+  </div>
+
+</div>
+
+<script src="admin.js"></script>
+
+
+</body>
+</html>

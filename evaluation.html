@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amanix - Evaluation</title>
+  <style>
+    /* ============================================
+       AMANIX - EVALUATION PAGE STYLES
+       ============================================ */
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #000000;
+      color: #e7e9ea;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #2f2f2f;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      object-fit: contain;
+    }
+
+    .header-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .header-title span { color: #7c3aed; }
+
+    .header-subtitle {
+      font-size: 12px;
+      color: #71767b;
+      margin-top: 2px;
+    }
+
+    .back-btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid #2f2f2f;
+      background: #1a1a1a;
+      color: #e7e9ea;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .back-btn:hover { background: #2a2a2a; }
+
+    /* ===== TABS ===== */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 24px;
+      background: #0a0a0a;
+      padding: 4px;
+      border-radius: 12px;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      background: transparent;
+      color: #71767b;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .tab.active {
+      background: #7c3aed;
+      color: white;
+    }
+
+    /* ===== SECTIONS ===== */
+    .section { display: none; }
+    .section.active { display: block; }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .section-desc {
+      font-size: 13px;
+      color: #71767b;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    /* ===== QUESTION CARD ===== */
+    .question {
+      background: #1a1a1a;
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid #2f2f2f;
+      margin-bottom: 12px;
+    }
+
+    .question-text {
+      font-size: 14px;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .question-number {
+      color: #7c3aed;
+      font-weight: bold;
+      margin-right: 6px;
+    }
+
+    /* ===== LIKERT SCALE (SUS) ===== */
+    .likert {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .likert-option {
+      flex: 1;
+      text-align: center;
+      padding: 12px 8px;
+      border-radius: 10px;
+      border: 2px solid #2f2f2f;
+      background: transparent;
+      color: #e7e9ea;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: bold;
+      font-family: inherit;
+      transition: all 0.15s;
+      user-select: none;
+    }
+
+    .likert-option:hover {
+      border-color: #4f4f4f;
+    }
+
+    .likert-option.selected {
+      border-color: #7c3aed;
+      background: rgba(124, 58, 237, 0.15);
+      color: #ffffff;
+    }
+
+    .likert-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #71767b;
+      margin-bottom: 10px;
+    }
+
+    /* ===== MULTIPLE CHOICE (Quiz) ===== */
+    .choice {
+      display: block;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 2px solid #2f2f2f;
+      background: transparent;
+      color: #e7e9ea;
+      cursor: pointer;
+      font-size: 13px;
+      margin-bottom: 8px;
+      transition: all 0.15s;
+      user-select: none;
+    }
+
+    .choice:hover {
+      border-color: #4f4f4f;
+    }
+
+    .choice.selected {
+      border-color: #7c3aed;
+      background: rgba(124, 58, 237, 0.15);
+      color: #ffffff;
+    }
+
+    .choice.correct {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.15);
+      color: #ffffff;
+    }
+
+    .choice.wrong {
+      border-color: #ef4444;
+      background: rgba(239, 68, 68, 0.15);
+      color: #ffffff;
+    }
+
+    /* ===== SUBMIT BUTTON ===== */
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 30px;
+      border: none;
+      background: #7c3aed;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: inherit;
+      margin-top: 20px;
+      transition: background 0.2s;
+    }
+
+    .submit-btn:hover { background: #6d28d9; }
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ===== RESULT BOX ===== */
+    .result {
+      display: none;
+      background: #1a1a1a;
+      border-radius: 16px;
+      padding: 24px;
+      border: 2px solid #7c3aed;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .result.show { display: block; }
+
+    .result-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .result-value {
+      font-size: 48px;
+      font-weight: bold;
+      color: #7c3aed;
+      margin-bottom: 8px;
+    }
+
+    .result-desc {
+      font-size: 13px;
+      color: #71767b;
+      line-height: 1.5;
+    }
+
+    .result-grade {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: bold;
+      margin-top: 12px;
+    }
+
+    .grade-a { background: #10b981; color: #000; }
+    .grade-b { background: #3b82f6; color: #fff; }
+    .grade-c { background: #f59e0b; color: #000; }
+    .grade-d { background: #ef4444; color: #fff; }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      text-align: center;
+      color: #4f4f4f;
+      font-size: 12px;
+      padding: 32px 0;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 600px) {
+      body { padding: 12px; }
+      .likert { flex-direction: column; }
+      .likert-option { padding: 10px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- ===== HEADER ===== -->
+  <div class="header">
+    <div class="header-left">
+      <img src="amanix_logo.png" alt="Amanix" class="header-logo" onerror="this.style.display='none'" />
+      <div>
+        <div class="header-title">Amanix <span>Evaluation</span></div>
+        <div class="header-subtitle">Help us improve by completing these evaluations</div>
+      </div>
+    </div>
+    <a href="dashboard.html" class="back-btn">← Back to Dashboard</a>
+  </div>
+
+  <!-- ===== TABS ===== -->
+  <div class="tabs">
+    <button class="tab active" id="susTab">😊 SUS Questionnaire</button>
+    <button class="tab" id="quizTab">📚 Privacy Quiz</button>
+  </div>
+
+  <!-- ============================================
+       SUS QUESTIONNAIRE SECTION
+       ============================================ -->
+  <div class="section active" id="susSection">
+
+    <div class="section-title">System Usability Scale (SUS)</div>
+    <div class="section-desc">
+      Please rate how much you agree with each statement about your experience with Amanix.
+      <br />
+      <strong>1 = Strongly Disagree, 5 = Strongly Agree</strong>
+    </div>
+
+    <div id="susQuestions">
+      <!-- Questions generated by JavaScript -->
+    </div>
+
+    <button class="submit-btn" id="susSubmitBtn" onclick="submitSUS()">Submit SUS Response</button>
+
+    <div class="result" id="susResult">
+      <div class="result-title">Your SUS Score</div>
+      <div class="result-value" id="susScoreValue">—</div>
+      <div class="result-desc" id="susScoreDesc">Calculating...</div>
+      <div id="susGrade"></div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       PRIVACY QUIZ SECTION
+       ============================================ -->
+  <div class="section" id="quizSection">
+
+    <div class="section-title">Privacy Awareness Quiz</div>
+    <div class="section-desc">
+      Answer these 8 questions about online privacy. This measures how much you have learned from using Amanix.
+    </div>
+
+    <div id="quizQuestions">
+      <!-- Questions generated by JavaScript -->
+    </div>
+
+    <button class="submit-btn" id="quizSubmitBtn" onclick="submitQuiz()">Submit Quiz</button>
+
+    <div class="result" id="quizResult">
+      <div class="result-title">Your Quiz Score</div>
+      <div class="result-value" id="quizScoreValue">—</div>
+      <div class="result-desc" id="quizScoreDesc">Calculating...</div>
+      <div id="quizGrade"></div>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <div class="footer">
+    Amanix Evaluation &bull; Project 17038D &bull; IIUM
+  </div>
+
+</div>
+
+<script>
+  /* ============================================
+     AMANIX - EVALUATION SCRIPT
+     ============================================ */
+
+  const SESSION_KEY = 'amanix_session';
+  const EVAL_KEY = 'amanix_evaluation';
+
+  // ===== SUS QUESTIONS (10) =====
+  // Odd questions = positive, Even questions = negative
+  const SUS_QUESTIONS = [
+    { text: "I think that I would like to use Amanix frequently.", positive: true },
+    { text: "I found Amanix unnecessarily complex.", positive: false },
+    { text: "I thought Amanix was easy to use.", positive: true },
+    { text: "I think that I would need the support of a technical person to be able to use Amanix.", positive: false },
+    { text: "I found the various functions in Amanix were well integrated.", positive: true },
+    { text: "I thought there was too much inconsistency in Amanix.", positive: false },
+    { text: "I would imagine that most people would learn to use Amanix very quickly.", positive: true },
+    { text: "I found Amanix very cumbersome to use.", positive: false },
+    { text: "I felt very confident using Amanix.", positive: true },
+    { text: "I needed to learn a lot of things before I could get going with Amanix.", positive: false }
+  ];
+
+  // ===== PRIVACY QUIZ QUESTIONS (8) =====
+  const QUIZ_QUESTIONS = [
+    {
+      text: "Which of the following is SAFEST to share publicly on social media?",
+      choices: ["Your school name", "Your favorite movie", "Your home address", "Your phone number"],
+      correct: 1,
+      explanation: "Favorite movies don't reveal your location, identity, or contact info."
+    },
+    {
+      text: "What is the MOST serious risk of sharing your email address publicly?",
+      choices: ["You'll get spam", "Hackers can try to reset your passwords", "You'll get too many newsletters", "It's not risky at all"],
+      correct: 1,
+      explanation: "Email is often used to reset passwords, so exposing it can lead to account takeover."
+    },
+    {
+      text: "You are at a café and want to post a photo. What is the SAFEST way to share your location?",
+      choices: ["Post '📍 At Starbucks now' in real-time", "Turn on live location", "Post the photo after you leave, without exact location", "Share your table number"],
+      correct: 2,
+      explanation: "Posting after you leave prevents real-time tracking."
+    },
+    {
+      text: "Which piece of information is MOST dangerous to share publicly?",
+      choices: ["Favorite color", "Pet's name", "IC/MyKad number", "School name"],
+      correct: 2,
+      explanation: "IC/MyKad numbers can be used for identity theft."
+    },
+    {
+      text: "A stranger messages: 'You won a prize! Click this link to claim it.' What should you do?",
+      choices: ["Click the link", "Reply with your info", "Ignore and block — it's a scam", "Share it with friends"],
+      correct: 2,
+      explanation: "Never click unknown links — this is a classic scam."
+    },
+    {
+      text: "What is 'oversharing' on social media?",
+      choices: ["Posting too often", "Sharing more personal information than necessary", "Tagging too many people", "Using too many emojis"],
+      correct: 1,
+      explanation: "Oversharing means revealing more private info than needed."
+    },
+    {
+      text: "What is a 'digital footprint'?",
+      choices: ["Your shoe size online", "The trail of data you leave online", "Your profile picture", "Your follower count"],
+      correct: 1,
+      explanation: "Your digital footprint is the record of everything you do online."
+    },
+    {
+      text: "Which of these is the BEST way to protect your privacy online?",
+      choices: [
+        "Share personal info only in private messages",
+        "Use the same password for all accounts",
+        "Post your location in real-time",
+        "Accept friend requests from everyone"
+      ],
+      correct: 0,
+      explanation: "Private messages are safer than public posts for personal info."
+    }
+  ];
+
+  // ===== State =====
+  let susAnswers = {};      // { 0: 3, 1: 5, ... }
+  let quizAnswers = {};     // { 0: 1, 1: 3, ... }
+  let currentSession = null;
+
+  // ===== Initialize =====
+  window.addEventListener('DOMContentLoaded', async () => {
+    await loadSession();
+    renderSUS();
+    renderQuiz();
+    setupTabs();
+  });
+
+  // ===== Load session =====
+  async function loadSession() {
+    try {
+      const result = await chrome.storage.local.get([SESSION_KEY]);
+      currentSession = result[SESSION_KEY];
+
+      if (!currentSession) {
+        console.log('⚠️ No session — redirecting to login');
+        window.location.href = 'login.html';
+      }
+    } catch (error) {
+      console.error('❌ Failed to load session', error);
+    }
+  }
+
+  // ===== Setup tab switching =====
+  function setupTabs() {
+    const susTab = document.getElementById('susTab');
+    const quizTab = document.getElementById('quizTab');
+    const susSection = document.getElementById('susSection');
+    const quizSection = document.getElementById('quizSection');
+
+    susTab.addEventListener('click', () => {
+      susTab.classList.add('active');
+      quizTab.classList.remove('active');
+      susSection.classList.add('active');
+      quizSection.classList.remove('active');
+    });
+
+    quizTab.addEventListener('click', () => {
+      quizTab.classList.add('active');
+      susTab.classList.remove('active');
+      quizSection.classList.add('active');
+      susSection.classList.remove('active');
+    });
+  }
+
+  // ============================================
+  // SUS RENDERING
+  // ============================================
+
+  function renderSUS() {
+    const container = document.getElementById('susQuestions');
+
+    container.innerHTML = SUS_QUESTIONS.map((q, index) => `
+      <div class="question">
+        <div class="question-text">
+          <span class="question-number">Q${index + 1}.</span>${q.text}
+        </div>
+        <div class="likert-labels">
+          <span>Strongly Disagree</span>
+          <span>Strongly Agree</span>
+        </div>
+        <div class="likert">
+          ${[1, 2, 3, 4, 5].map(num => `
+            <div class="likert-option" data-question="${index}" data-value="${num}">
+              ${num}
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `).join('');
+
+    // Attach click handlers to Likert options
+    container.querySelectorAll('.likert-option').forEach(option => {
+      option.addEventListener('click', () => {
+        const qIndex = option.dataset.question;
+        const value = parseInt(option.dataset.value);
+
+        // Remove selected from siblings
+        const siblings = option.parentElement.querySelectorAll('.likert-option');
+        siblings.forEach(s => s.classList.remove('selected'));
+
+        // Mark selected
+        option.classList.add('selected');
+        susAnswers[qIndex] = value;
+      });
+    });
+  }
+
+  // ============================================
+  // QUIZ RENDERING
+  // ============================================
+
+  function renderQuiz() {
+    const container = document.getElementById('quizQuestions');
+
+    container.innerHTML = QUIZ_QUESTIONS.map((q, qIndex) => `
+      <div class="question" id="quiz-q-${qIndex}">
+        <div class="question-text">
+          <span class="question-number">Q${qIndex + 1}.</span>${q.text}
+        </div>
+        ${q.choices.map((choice, cIndex) => `
+          <div class="choice" data-question="${qIndex}" data-choice="${cIndex}">
+            ${String.fromCharCode(65 + cIndex)}. ${choice}
+          </div>
+        `).join('')}
+      </div>
+    `).join('');
+
+    // Attach click handlers
+    container.querySelectorAll('.choice').forEach(choice => {
+      choice.addEventListener('click', () => {
+        const qIndex = choice.dataset.question;
+        const cIndex = parseInt(choice.dataset.choice);
+
+        // Prevent changing after submission
+        if (choice.closest('.question').dataset.answered === 'true') return;
+
+        // Remove selected from siblings in the same question
+        const parent = choice.closest('.question');
+        parent.querySelectorAll('.choice').forEach(c => c.classList.remove('selected'));
+
+        // Mark selected
+        choice.classList.add('selected');
+        quizAnswers[qIndex] = cIndex;
+      });
+    });
+  }
+
+  // ============================================
+  // SUBMIT SUS
+  // ============================================
+
+  async function submitSUS() {
+    // Check all 10 answered
+    if (Object.keys(susAnswers).length < SUS_QUESTIONS.length) {
+      alert(`Please answer all ${SUS_QUESTIONS.length} questions. You have answered ${Object.keys(susAnswers).length}.`);
+      return;
+    }
+
+    // SUS scoring:
+    // Odd questions (0,2,4,6,8): score = rating - 1
+    // Even questions (1,3,5,7,9): score = 5 - rating
+    // Sum all → multiply by 2.5
+    let total = 0;
+    for (let i = 0; i < SUS_QUESTIONS.length; i++) {
+      const rating = susAnswers[i];
+      if (SUS_QUESTIONS[i].positive) {
+        total += rating - 1;
+      } else {
+        total += 5 - rating;
+      }
+    }
+
+    const susScore = total * 2.5;
+    const roundedScore = Math.round(susScore * 10) / 10;
+
+    // Show result
+    const result = document.getElementById('susResult');
+    const value = document.getElementById('susScoreValue');
+    const desc = document.getElementById('susScoreDesc');
+    const gradeEl = document.getElementById('susGrade');
+
+    value.textContent = roundedScore + ' / 100';
+
+    let gradeText, gradeClass, descText;
+    if (roundedScore >= 80.3) {
+      gradeText = 'A+ — Excellent';
+      gradeClass = 'grade-a';
+      descText = 'Users found Amanix extremely usable!';
+    } else if (roundedScore >= 68) {
+      gradeText = 'B — Above Average';
+      gradeClass = 'grade-b';
+      descText = 'Users found Amanix more usable than average systems.';
+    } else if (roundedScore >= 51) {
+      gradeText = 'C — Acceptable';
+      gradeClass = 'grade-c';
+      descText = 'Usability is acceptable but could be improved.';
+    } else {
+      gradeText = 'D — Needs Improvement';
+      gradeClass = 'grade-d';
+      descText = 'Usability could be significantly improved.';
+    }
+
+    desc.textContent = descText;
+    gradeEl.innerHTML = `<span class="result-grade ${gradeClass}">${gradeText}</span>`;
+
+    result.classList.add('show');
+    document.getElementById('susSubmitBtn').disabled = true;
+
+    // Save to Chrome storage
+    await saveEvaluation('sus', {
+      score: roundedScore,
+      grade: gradeText,
+      answers: susAnswers,
+      timestamp: new Date().toISOString()
+    });
+
+    // Scroll to result
+    result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  // ============================================
+  // SUBMIT QUIZ
+  // ============================================
+
+  async function submitQuiz() {
+    if (Object.keys(quizAnswers).length < QUIZ_QUESTIONS.length) {
+      alert(`Please answer all ${QUIZ_QUESTIONS.length} questions. You have answered ${Object.keys(quizAnswers).length}.`);
+      return;
+    }
+
+    // Mark answers and compute score
+    let correctCount = 0;
+    const detailedAnswers = [];
+
+    QUIZ_QUESTIONS.forEach((q, qIndex) => {
+      const userChoice = quizAnswers[qIndex];
+      const isCorrect = userChoice === q.correct;
+      if (isCorrect) correctCount++;
+
+      // Visual feedback
+      const questionEl = document.getElementById(`quiz-q-${qIndex}`);
+      questionEl.dataset.answered = 'true';
+
+      questionEl.querySelectorAll('.choice').forEach((choiceEl, cIndex) => {
+        choiceEl.classList.remove('selected');
+
+        if (cIndex === q.correct) {
+          choiceEl.classList.add('correct');
+        } else if (cIndex === userChoice && !isCorrect) {
+          choiceEl.classList.add('wrong');
+        }
+      });
+
+      detailedAnswers.push({
+        question: q.text,
+        userChoice: userChoice,
+        correctChoice: q.correct,
+        isCorrect: isCorrect
+      });
+    });
+
+    const percentage = Math.round((correctCount / QUIZ_QUESTIONS.length) * 100);
+
+    // Show result
+    const result = document.getElementById('quizResult');
+    const value = document.getElementById('quizScoreValue');
+    const desc = document.getElementById('quizScoreDesc');
+    const gradeEl = document.getElementById('quizGrade');
+
+    value.textContent = `${correctCount} / ${QUIZ_QUESTIONS.length} (${percentage}%)`;
+
+    let gradeText, gradeClass;
+    if (percentage >= 90) { gradeText = '🏆 Excellent!'; gradeClass = 'grade-a'; }
+    else if (percentage >= 75) { gradeText = '✅ Great!'; gradeClass = 'grade-b'; }
+    else if (percentage >= 50) { gradeText = '📘 Keep Learning'; gradeClass = 'grade-c'; }
+    else { gradeText = '📚 Study More'; gradeClass = 'grade-d'; }
+
+    desc.textContent = `You got ${correctCount} out of ${QUIZ_QUESTIONS.length} questions correct.`;
+    gradeEl.innerHTML = `<span class="result-grade ${gradeClass}">${gradeText}</span>`;
+
+    result.classList.add('show');
+    document.getElementById('quizSubmitBtn').disabled = true;
+
+    // Save to Chrome storage
+    await saveEvaluation('quiz', {
+      score: correctCount,
+      total: QUIZ_QUESTIONS.length,
+      percentage: percentage,
+      answers: detailedAnswers,
+      timestamp: new Date().toISOString()
+    });
+
+    result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  // ============================================
+  // SAVE EVALUATION
+  // ============================================
+
+  async function saveEvaluation(type, data) {
+    try {
+      if (!currentSession) return;
+
+      const key = EVAL_KEY + '_' + currentSession.userId;
+      const result = await chrome.storage.local.get([key]);
+      const existing = result[key] || { sus: null, quiz: null };
+
+      existing[type] = data;
+
+      await chrome.storage.local.set({ [key]: existing });
+      console.log('💾 Evaluation saved:', type, data);
+    } catch (error) {
+      console.error('❌ Failed to save evaluation', error);
+    }
+  }
+
+  // ============================================
+  // AUTO-SCROLL ON SUBMIT
+  // ============================================
+
+  console.log('🛡️ Amanix Evaluation page loaded');
+</script>
+
+</body>
+</html>

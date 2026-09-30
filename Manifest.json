@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "Amanix",
+  "version": "2.0",
+  "description": "Educational browser extension for teen social media safety",
+  "permissions": ["storage", "tabs"],
+  "background": {
+  "service_worker": "background.js"
+  },
+  "host_permissions": ["*://*.threads.net/*", "*://*.threads.com/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Amanix - Click to sign in"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.threads.net/*", "*://*.threads.com/*"],
+      "js": ["content_test.js"],
+      "css": ["styles_test.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+      "amanix_logo.png",
+      "login.html",
+      "login.js",
+      "dashboard.html",
+      "dashboard.js",
+      "admin.html",
+      "admin.js",
+      "evaluation.html",
+      "evaluation.js",
+      "popup.html",
+      "popup.js",
+      "styles_test.css"
+    ],
+    "matches": ["<all_urls>"]
+    }
+  ]
+}
